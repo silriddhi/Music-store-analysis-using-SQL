@@ -1,10 +1,10 @@
 --senior most employee based on age
-select first_name,age(current_date,birthdate)as age from employee
+select first_name,TIMESTAMPDIFF(YEAR, date_of_birth, CURDATE()) as age from employee
 order by age desc
 limit 1
 
 --  senior most employee based on job title
-whselect * from employee
+select * from employee
 order by levels desc
 limit 1
 
@@ -83,7 +83,7 @@ order by 3 desc
 --Write a query that returns each country along with the top Genre. For countries where the maximum
 --number of purchases is shared return all Genres
 
-with cte as (select billing_country as country,g.name,count(*) as purchases,row_number() over(partition by billing_country order by count(*) desc) as rnk
+with cte as (select billing_country as country,g.name,count(*) as purchases,dense_rank() over(partition by billing_country order by count(*) desc) as rnk
 from invoice i
 join invoice_line il on i.invoice_id=il.invoice_id
 join track t on il.track_id=t.track_id
